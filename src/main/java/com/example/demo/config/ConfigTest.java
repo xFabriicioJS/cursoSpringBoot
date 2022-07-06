@@ -11,6 +11,7 @@ import com.example.demo.entities.Category;
 import com.example.demo.entities.Client;
 import com.example.demo.entities.Order;
 import com.example.demo.entities.OrderItem;
+import com.example.demo.entities.Payment;
 import com.example.demo.entities.Product;
 import com.example.demo.entities.enums.OrderStatus;
 import com.example.demo.repositories.CategoryRepository;
@@ -72,7 +73,7 @@ public class ConfigTest implements CommandLineRunner {
         Client u2 = new Client(null, "Alex Green", "alex@gmail.com", "977777777", "123456");
 
         Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), u1, OrderStatus.PAID);
-        Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), u2, OrderStatus.SHIPPED);
+        Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), u2, OrderStatus.WAITING_PAYMENT);
         Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), u1, OrderStatus.WAITING_PAYMENT);
 
         // Salvará no banco de dados]
@@ -86,6 +87,11 @@ public class ConfigTest implements CommandLineRunner {
         OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
         
         orderItemRepository.saveAll(Arrays.asList(oi1,oi2,oi3,oi4));
+
+        Payment pay1 = new Payment(null, Instant.parse("2019-06-20T21:53:07Z"), o1);
+        o1.setPayment(pay1);
+
+        orderRepository.save(o1);
 
     }
 
