@@ -1,13 +1,20 @@
 package com.example.demo.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.annotation.Generated;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Table(name = "tb_client")
 @Entity
 public class Client implements Serializable{
         
@@ -18,6 +25,10 @@ public class Client implements Serializable{
         private String email;
         private String phone;
         private String password;
+
+        @JsonIgnore
+        @OneToMany(mappedBy = "client")
+        private List<Order> orders = new ArrayList<>();
 
         public Client(){
 
@@ -70,6 +81,10 @@ public class Client implements Serializable{
         public void setPassword(String password) {
             this.password = password;
         }
+        
+        public List<Order> getOrders() {
+            return orders;
+        }
 
         @Override
         public int hashCode() {
@@ -95,9 +110,5 @@ public class Client implements Serializable{
                 return false;
             return true;
         }
-
-
-        
-        
-
+       
 }
