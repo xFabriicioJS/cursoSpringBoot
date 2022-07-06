@@ -2,19 +2,21 @@ package com.example.demo.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.example.demo.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity
@@ -33,7 +35,12 @@ public class Order implements Serializable{
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
+    
     private Integer orderStatus;
+
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<OrderItem>();
+
 
     public Order(){
         
@@ -79,6 +86,10 @@ public class Order implements Serializable{
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return items;
     }
 
     @Override
